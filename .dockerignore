@@ -1,0 +1,31 @@
+# Ignore virtual environments
+venv/
+env/
+__pycache__/
+
+# Ignore OS / IDE files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore Git metadata
+.git
+.gitignore
+
+# Ignore notebooks
+*.ipynb
+
+# Ignore data & outputs
+*.csv
+*.xlsx
+*.pkl
+
+# Ignore logs
+*.log
+
+# Ignore cache & build artifacts
+*.egg-info
+*.pyc
+*.pyo
+dist/
+build/
