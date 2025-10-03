@@ -13,6 +13,7 @@ class TelcoChurn:
     def __init__(self, data_path, random_state= 10):
         self.data = pd.read_csv(data_path)
         self.random_state = random_state
+        self.encoders = {}
 
     def preprocess(self):
         df = self.data.copy()
@@ -20,8 +21,11 @@ class TelcoChurn:
         df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors= 'coerce').fillna(0)
         
         for col in df.select_dtypes(["object"]).columns:
-            df[col] = LabelEncoder().fit_transform(df[col])
-
+            le = LabelEncoder()
+            df[col] = le.fit_transform(df[col])
+            self.encoders[col] = le
+        if "customerID" in df.columns:
+            df = df.drop(columns=["customerID"])
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             df.drop(columns=["Churn"]),
             df["Churn"],
@@ -47,8 +51,10 @@ class TelcoChurn:
 
     def model_fit(self):
         self.model.fit (self.X_train, self.y_train)
+        joblib.dump(self.model, "model.pkl")
+        joblib.dump(self.encoders, "encoders.pkl")
 
     def evaluate(self):
         y_pred = self.model.predict(self.X_test)
-        print("Accuracy Score: {accuracy_score(self.y_test, y_pred)}\n")
-        print(f"Classificaiton Report:\n{classification_report(self.y_test, y_pred)}")
+        print(f"Accuracy Score: {accuracy_score(self.y_test, y_pred):.4f}\n")
+        print(f"Classification Report:\n{classification_report(self.y_test, y_pred)}")

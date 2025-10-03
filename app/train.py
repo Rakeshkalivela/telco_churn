@@ -2,7 +2,7 @@ from trainer import TelcoChurn
 
 def main():
 
-    tel = TelcoChurn("../data/WA_Fn-UseC_-Telco-Customer-Churn.csv", random_state=10)
+    tel = TelcoChurn("data/WA_Fn-UseC_-Telco-Customer-Churn.csv", random_state=10)
 
     X_train, X_test, y_train, y_test  = tel.preprocess()
 
